@@ -1,0 +1,86 @@
+/* Importa fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;600&display=swap');
+
+/* Reset básico + box model consistente */
+*, *::before, *::after {
+    box-sizing: border-box; /* inclui padding e border no cálculo de largura/altura */
+    margin: 0; /* remove margens padrão */
+    padding: 0; /* remove paddings padrão */
+}
+
+/* Variáveis CSS (facilitam manutenção do tema) */
+:root {
+    --bg: #000000;      /* cor de fundo */
+    --ink: #f0f0f0;     /* cor principal do texto */
+    --mid: #909090;     /* cor intermediária (menus, detalhes) */
+    --accent: #c9a96e;  /* cor de destaque */
+    --gap: 6px;         /* espaçamento padrão entre elementos */
+}
+
+body {
+    background-color: var(--bg); /* fundo da página */
+    color: var(--ink); /* cor padrão do texto */
+    font-family: 'Montserrat', sans-serif; /* fonte principal */
+    min-height: 100vh; /* altura mínima = tela inteira */
+    overflow-x: hidden; /* impede rolagem horizontal */
+}
+
+/* ── NAV ── */
+nav {
+    background-color: var(--bg); /* fundo do menu */
+    padding: 22px 40px 16px; /* espaçamento interno */
+    display: flex;
+    flex-direction: column; /* itens em coluna */
+    align-items: center; /* centraliza horizontalmente */
+    gap: 10px; /* espaço entre elementos */
+}
+
+nav h1 {
+    font-family: 'Cormorant Garamond', serif; /* fonte do título */
+    font-weight: 300;
+    font-size: 2.4em;
+    letter-spacing: 0.35em; /* espaçamento entre letras */
+    color: var(--ink);
+}
+
+nav ul {
+    list-style: none; /* remove marcadores da lista */
+    display: flex; /* deixa os itens lado a lado */
+    gap: 36px; /* espaçamento entre itens */
+}
+
+nav ul li a {
+    text-decoration: none; /* remove sublinhado */
+    color: var(--mid); /* cor padrão */
+    font-size: 0.7em;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    position: relative; /* necessário para o ::after */
+    transition: color 0.3s; /* anima mudança de cor */
+}
+
+/* Linha animada embaixo do link */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0; /* começa invisível */
+    height: 1px;
+    bottom: -3px;
+    left: 0;
+    background-color: var(--accent);
+    transition: width 0.35s ease; /* anima expansão */
+}
+
+/* Hover e estado ativo */
+nav ul li a:hover { color: var(--ink); }
+nav ul li a:hover::after,
+nav ul li a.active::after { width: 100%; } /* linha aparece */
+nav ul li a.active { color: var(--ink); }
+
+/* Linha divisória estilizada */
+hr.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mid) 20%, var(--mid) 80%, transparent);
+    margin: 0;
+}

@@ -1,0 +1,244 @@
+/* Importa fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;600&display=swap');
+
+/* Reset básico + box model consistente */
+*, *::before, *::after {
+    box-sizing: border-box; /* inclui padding e border no cálculo de largura/altura */
+    margin: 0; /* remove margens padrão */
+    padding: 0; /* remove paddings padrão */
+}
+
+/* Variáveis CSS (facilitam manutenção do tema) */
+:root {
+    --bg: #000000;      /* cor de fundo */
+    --ink: #f0f0f0;     /* cor principal do texto */
+    --mid: #909090;     /* cor intermediária (menus, detalhes) */
+    --accent: #c9a96e;  /* cor de destaque */
+    --gap: 6px;         /* espaçamento padrão entre elementos */
+}
+
+body {
+    background-color: var(--bg); /* fundo da página */
+    color: var(--ink); /* cor padrão do texto */
+    font-family: 'Montserrat', sans-serif; /* fonte principal */
+    min-height: 100vh; /* altura mínima = tela inteira */
+    overflow-x: hidden; /* impede rolagem horizontal */
+}
+
+/* ── NAV ── */
+nav {
+    background-color: var(--bg); /* fundo do menu */
+    padding: 22px 40px 16px; /* espaçamento interno */
+    display: flex;
+    flex-direction: column; /* itens em coluna */
+    align-items: center; /* centraliza horizontalmente */
+    gap: 10px; /* espaço entre elementos */
+}
+
+nav h1 {
+    font-family: 'Cormorant Garamond', serif; /* fonte do título */
+    font-weight: 300;
+    font-size: 2.4em;
+    letter-spacing: 0.35em; /* espaçamento entre letras */
+    color: var(--ink);
+}
+
+nav ul {
+    list-style: none; /* remove marcadores da lista */
+    display: flex; /* deixa os itens lado a lado */
+    gap: 36px; /* espaçamento entre itens */
+}
+
+nav ul li a {
+    text-decoration: none; /* remove sublinhado */
+    color: var(--mid); /* cor padrão */
+    font-size: 0.7em;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    position: relative; /* necessário para o ::after */
+    transition: color 0.3s; /* anima mudança de cor */
+}
+
+/* Linha animada embaixo do link */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0; /* começa invisível */
+    height: 1px;
+    bottom: -3px;
+    left: 0;
+    background-color: var(--accent);
+    transition: width 0.35s ease; /* anima expansão */
+}
+
+/* Hover e estado ativo */
+nav ul li a:hover { color: var(--ink); }
+nav ul li a:hover::after,
+nav ul li a.active::after { width: 100%; } /* linha aparece */
+nav ul li a.active { color: var(--ink); }
+
+/* Linha divisória estilizada */
+hr.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mid) 20%, var(--mid) 80%, transparent);
+    margin: 0;
+}
+
+/* ── MASONRY GRID ── */
+.portfolio-grid {
+    padding: 12px 16px;
+    max-width: 900px; /* largura máxima — 2 colunas compactas */
+    margin: 0 auto;   /* centraliza horizontalmente */
+
+    /* truque para centralizar grid interno do Masonry */
+    display: flex;
+    justify-content: center;
+
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.portfolio-grid.loaded {
+    opacity: 1;
+}
+
+/* Imagens do grid */
+.portfolio-grid img {
+    width: calc(50% - 4px); /* 2 colunas com gap pequeno */
+    margin-bottom: var(--gap); /* espaço vertical entre imagens */
+    display: block;
+    cursor: pointer; /* cursor de clique */
+    border-radius: 2px; /* cantos levemente arredondados */
+    transition: transform 0.4s ease, filter 0.4s ease, box-shadow 0.4s ease;
+    filter: saturate(0.9); /* reduz um pouco a saturação */
+}
+
+/* Efeito ao passar o mouse */
+.portfolio-grid img:hover {
+    transform: scale(1.02); /* leve zoom */
+    filter: saturate(1.15); /* aumenta saturação */
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25); /* sombra */
+    z-index: 2; /* traz para frente */
+    position: relative;
+}
+
+/* ── MODAL ── */
+.modal {
+    display: none; /* escondido por padrão */
+    position: fixed;
+    z-index: 100; /* fica acima de tudo */
+    left: 0; top: 0;
+    width: 100%; height: 100%; /* ocupa tela inteira */
+    background-color: rgba(10,10,10,0.93); /* fundo escuro transparente */
+    backdrop-filter: blur(4px); /* efeito de desfoque atrás */
+    align-items: center;
+    justify-content: center;
+}
+
+/* Quando o modal é ativado */
+.modal.open { display: flex; }
+
+.modal-content {
+    max-width: 88vw; /* largura máxima relativa à tela */
+    max-height: 88vh; /* altura máxima */
+    object-fit: contain; /* mantém proporção da imagem */
+    box-shadow: 0 20px 80px rgba(0,0,0,0.6);
+    animation: fadeIn 0.3s ease; /* animação de entrada */
+}
+
+/* Animação de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Botão de fechar */
+.close {
+    position: absolute;
+    top: 20px; right: 30px;
+    color: rgba(255,255,255,0.7);
+    font-size: 36px;
+    font-weight: 300;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+    font-family: 'Cormorant Garamond', serif;
+}
+
+.close:hover { color: #fff; }
+
+/* Botões de navegação (anterior/próximo) */
+.prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%); /* centraliza verticalmente */
+    color: rgba(255,255,255,0.6);
+    font-size: 28px;
+    padding: 16px 20px;
+    user-select: none; /* impede seleção de texto */
+    transition: color 0.2s, background 0.2s;
+    border-radius: 3px;
+}
+
+.prev { left: 12px; }
+.next { right: 12px; }
+
+/* Hover dos botões */
+.prev:hover, .next:hover { 
+    color: #fff; 
+    background: rgba(255,255,255,0.08); 
+}
+
+/* ── RESPONSIVO ── */
+
+/* Tablet — mantém 2 colunas */
+@media (max-width: 1024px) {
+    .portfolio-grid img { width: calc(50% - 4px); }
+}
+
+/* Celular pequeno */
+@media (max-width: 700px) {
+    .portfolio-grid img { width: calc(50% - 3px); } /* mantém 2 colunas */
+    nav { padding: 18px 20px 12px; }
+    nav h1 { font-size: 1.8em; }
+}
+
+/* Telas muito pequenas */
+@media (max-width: 400px) {
+    .portfolio-grid img { width: 100%; } /* 1 coluna */
+}
+/* ── BOTÃO CTA ── */
+a[href="agendamento.html"] {
+    text-decoration: none;
+}
+
+a[href="agendamento.html"] button {
+    display: block;
+    margin: 48px auto 56px;
+    padding: 14px 40px;
+    background: var(--accent);
+    color: #000000;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65em;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    border-radius: 1px;
+    box-shadow:
+        0 0 18px rgba(201, 169, 110, 0.5),
+        0 0 40px rgba(201, 169, 110, 0.25),
+        0 0 80px rgba(201, 169, 110, 0.1);
+    transition: box-shadow 0.35s ease, background 0.35s ease;
+}
+
+a[href="agendamento.html"] button:hover {
+    background: #dbb97e;
+    color: #0d0a04;
+    box-shadow:
+        0 0 28px rgba(201, 169, 110, 0.75),
+        0 0 60px rgba(201, 169, 110, 0.4),
+        0 0 120px rgba(201, 169, 110, 0.2);
+}

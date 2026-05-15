@@ -1,0 +1,305 @@
+/* Importa fontes do Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400;600&display=swap');
+
+/* Reset básico + box model consistente */
+*, *::before, *::after {
+    box-sizing: border-box; /* inclui padding e border no cálculo de largura/altura */
+    margin: 0; /* remove margens padrão */
+    padding: 0; /* remove paddings padrão */
+}
+
+/* Variáveis CSS (facilitam manutenção do tema) */
+:root {
+    --bg: #000000;      /* cor de fundo */
+    --ink: #f0f0f0;     /* cor principal do texto */
+    --mid: #909090;     /* cor intermediária (menus, detalhes) */
+    --accent: #c9a96e;  /* cor de destaque */
+    --gap: 6px;         /* espaçamento padrão entre elementos */
+}
+
+body {
+    background-color: var(--bg); /* fundo da página */
+    color: var(--ink); /* cor padrão do texto */
+    font-family: 'Montserrat', sans-serif; /* fonte principal */
+    min-height: 100vh; /* altura mínima = tela inteira */
+    overflow-x: hidden; /* impede rolagem horizontal */
+}
+
+/* ── NAV ── */
+nav {
+    background-color: var(--bg); /* fundo do menu */
+    padding: 22px 40px 16px; /* espaçamento interno */
+    display: flex;
+    flex-direction: column; /* itens em coluna */
+    align-items: center; /* centraliza horizontalmente */
+    gap: 10px; /* espaço entre elementos */
+}
+
+nav h1 {
+    font-family: 'Cormorant Garamond', serif; /* fonte do título */
+    font-weight: 300;
+    font-size: 2.4em;
+    letter-spacing: 0.35em; /* espaçamento entre letras */
+    color: var(--ink);
+}
+
+nav ul {
+    list-style: none; /* remove marcadores da lista */
+    display: flex; /* deixa os itens lado a lado */
+    gap: 36px; /* espaçamento entre itens */
+}
+
+nav ul li a {
+    text-decoration: none; /* remove sublinhado */
+    color: var(--mid); /* cor padrão */
+    font-size: 0.7em;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    position: relative; /* necessário para o ::after */
+    transition: color 0.3s; /* anima mudança de cor */
+}
+
+/* Linha animada embaixo do link */
+nav ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0; /* começa invisível */
+    height: 1px;
+    bottom: -3px;
+    left: 0;
+    background-color: var(--accent);
+    transition: width 0.35s ease; /* anima expansão */
+}
+
+/* Hover e estado ativo */
+nav ul li a:hover { color: var(--ink); }
+nav ul li a:hover::after,
+nav ul li a.active::after { width: 100%; } /* linha aparece */
+nav ul li a.active { color: var(--ink); }
+
+/* Linha divisória estilizada */
+hr.divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mid) 20%, var(--mid) 80%, transparent);
+    margin: 0;
+}
+/* ── HERO TRIO ── */
+.hero-trio {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    max-width: 1100px;
+    margin: 20px auto 0;
+    padding: 0 16px;
+}
+
+.hero-img {
+    overflow: hidden;
+    aspect-ratio: 3 / 4;
+}
+
+.hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.9);
+    transition: transform 0.5s ease, filter 0.5s ease;
+}
+
+.hero-img:hover img {
+    transform: scale(1.04);
+    filter: saturate(1.1);
+}
+
+/* ── STATEMENT ── */
+.statement {
+    text-align: center;
+    padding: 72px 24px 64px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.statement-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: clamp(1.6em, 3.5vw, 2.8em);
+    letter-spacing: 0.1em;
+    line-height: 1.35;
+    color: var(--ink);
+    margin-bottom: 40px;
+}
+
+/* ── BOTÃO CTA ── */
+.cta-link {
+    text-decoration: none;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 14px 44px;
+    background: var(--accent);
+    color: #1a1208;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65em;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    cursor: pointer;
+    border-radius: 1px;
+    box-shadow:
+        0 0 18px rgba(201, 169, 110, 0.5),
+        0 0 40px rgba(201, 169, 110, 0.25),
+        0 0 80px rgba(201, 169, 110, 0.1);
+    transition: box-shadow 0.35s ease, background 0.35s ease;
+}
+
+.cta-btn:hover {
+    background: #dbb97e;
+    box-shadow:
+        0 0 28px rgba(201, 169, 110, 0.75),
+        0 0 60px rgba(201, 169, 110, 0.4),
+        0 0 120px rgba(201, 169, 110, 0.2);
+}
+
+/* ── SECTION LABEL ── */
+.section-label {
+    text-align: center;
+    font-size: 0.6em;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--mid);
+    margin-bottom: 40px;
+}
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 16px 64px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+
+.card {
+    background: #0e0e0e;
+    border: 1px solid #1e1e1e;
+    border-radius: 3px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: #333;
+}
+
+.card-photo {
+    width: 64px;
+    height: 64px;
+    border-radius: 2px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.card-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.8);
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.card-name {
+    font-size: 0.6em;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+}
+
+.card-text {
+    font-size: 0.7em;
+    font-weight: 300;
+    line-height: 1.7;
+    color: var(--mid);
+}
+
+/* ── ANTES E DEPOIS ── */
+.before-after {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 16px 80px;
+}
+
+.ba-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ba-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.ba-item {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+}
+
+.ba-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.4s ease;
+}
+
+.ba-item:hover img {
+    filter: saturate(1.1);
+}
+
+.ba-label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 0.55em;
+    font-weight: 600;
+    letter-spacing: 0.25em;
+    color: rgba(255,255,255,0.7);
+    background: rgba(0,0,0,0.45);
+    padding: 4px 10px;
+    border-radius: 1px;
+    backdrop-filter: blur(4px);
+}
+
+.ba-label.after {
+    color: var(--accent);
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 900px) {
+    .cards-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+    .hero-trio { grid-template-columns: 1fr; }
+    .cards-grid { grid-template-columns: 1fr; }
+    .ba-pair { grid-template-columns: 1fr; }
+    .statement-title { font-size: 1.5em; }
+}
