@@ -1,131 +1,113 @@
-// ── MASONRY ──
-var grid = document.querySelector('.portfolio-grid');
+// ── SETUP ──
+var grid    = document.querySelector('.portfolio-grid');
+var isMobile = window.innerWidth <= 700;
 
-imagesLoaded(grid, function () {
+// ── MOBILE: CSS grid puro, sem Masonry ──
+if (isMobile) {
+    Array.from(grid.querySelectorAll('img')).forEach(function(img) {
+        img.classList.add('img-loaded');
+    });
+    grid.classList.add('loaded');
+
+// ── DESKTOP: Masonry centralizado ──
+} else {
     var msnry = new Masonry(grid, {
         itemSelector: 'img',
         columnWidth: 'img',
         gutter: 8,
         fitWidth: true,
-        transitionDuration: '0.3s'
+        transitionDuration: '0.2s',
+        stagger: 0
     });
 
-    // MOSTRA O GRID SÓ DEPOIS QUE ESTIVER PRONTO
     grid.classList.add('loaded');
-});
+
+    // Centraliza calculando o padding-left necessário
+    function centerMasonry() {
+        // Masonry seta largura no próprio elemento quando fitWidth:true
+        var msnryW = parseInt(grid.style.width || 0, 10);
+        if (!msnryW) return;
+        var containerW = grid.parentElement
+            ? grid.parentElement.offsetWidth
+            : window.innerWidth;
+        var pad = Math.max(0, Math.floor((containerW - msnryW) / 2));
+        grid.style.marginLeft  = pad + 'px';
+        grid.style.marginRight = pad + 'px';
+    }
+
+    imagesLoaded(grid).on('progress', function(instance, image) {
+        image.img.classList.add('img-loaded');
+        msnry.layout();
+        centerMasonry();
+    });
+
+    imagesLoaded(grid, function() {
+        msnry.layout();
+        centerMasonry();
+    });
+}
 
 
 // ── MODAL ──
 var modal    = document.getElementById('gallery-modal');
 var modalImg = document.getElementById('modal-img');
 var imgs     = Array.from(document.querySelectorAll('.portfolio-grid img'));
+var current  = 0;
+var isAnimating = false;
 
-var current = 0;
-var isAnimating = false; // evita spam de clique
-
-
-// ── PRELOAD DAS IMAGENS ──
-// carrega todas as imagens antes pra navegação ficar instantânea
-var preloaded = imgs.map(img => {
+var preloaded = imgs.map(function(img) {
     var i = new Image();
     i.src = img.src;
     return i;
 });
 
-
-// ── ABRIR MODAL ──
 function openModal(index) {
     current = index;
     modalImg.src = preloaded[current].src;
     modal.classList.add('open');
 }
 
-
-// ── FECHAR MODAL ──
 function closeModal() {
     modal.classList.remove('open');
 }
 
-
-// ── TRANSIÇÃO SUAVE ENTRE IMAGENS ──
 function changeImage(newIndex) {
-    if (isAnimating) return; // trava spam
+    if (isAnimating) return;
     isAnimating = true;
-
-    // fade-out
     modalImg.style.opacity = 0;
-
-    setTimeout(function () {
+    setTimeout(function() {
         current = newIndex;
         modalImg.src = preloaded[current].src;
-
-        // fade-in
         modalImg.style.opacity = 1;
-
         isAnimating = false;
     }, 150);
 }
 
+function showNext() { changeImage((current + 1) % imgs.length); }
+function showPrev() { changeImage((current - 1 + imgs.length) % imgs.length); }
 
-// ── PRÓXIMA / ANTERIOR ──
-function showNext() {
-    var nextIndex = (current + 1) % imgs.length;
-    changeImage(nextIndex);
-}
-
-function showPrev() {
-    var prevIndex = (current - 1 + imgs.length) % imgs.length;
-    changeImage(prevIndex);
-}
-
-
-// ── CLICK NAS IMAGENS ──
 imgs.forEach(function(img, i) {
-    img.addEventListener('click', function() {
-        openModal(i);
-    });
+    img.addEventListener('click', function() { openModal(i); });
 });
 
-
-// ── BOTÕES ──
 document.querySelector('.close').addEventListener('click', closeModal);
 document.querySelector('.next').addEventListener('click', showNext);
 document.querySelector('.prev').addEventListener('click', showPrev);
 
-
-// ── CLICK FORA (FECHAR) ──
 modal.addEventListener('click', function(e) {
     if (e.target === modal) closeModal();
 });
 
-
-// ── TECLADO ──
 document.addEventListener('keydown', function(e) {
     if (!modal.classList.contains('open')) return;
-
     if (e.key === 'ArrowRight') showNext();
     if (e.key === 'ArrowLeft')  showPrev();
     if (e.key === 'Escape')     closeModal();
 });
 
-
-// ── SWIPE (MOBILE) ──
 var startX = 0;
-
-modal.addEventListener('touchstart', function(e) {
-    startX = e.touches[0].clientX;
-});
-
+modal.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; });
 modal.addEventListener('touchend', function(e) {
-    var endX = e.changedTouches[0].clientX;
-    var diff = startX - endX;
-
-    // threshold mínimo pra considerar swipe
-    if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-            showNext(); // swipe esquerda → próxima
-        } else {
-            showPrev(); // swipe direita → anterior
-        }
-    }
+    var diff = startX - e.changedTouches[0].clientX;
+    if (Math.abs(diff) > 50) { diff > 0 ? showNext() : showPrev(); }
 });

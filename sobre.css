@@ -84,3 +84,169 @@ hr.divider {
     background: linear-gradient(90deg, transparent, var(--mid) 20%, var(--mid) 80%, transparent);
     margin: 0;
 }
+/* ── SOBRE ── */
+.about {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    gap: 72px;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 72px 40px 80px;
+    align-items: start;
+}
+
+.about-image {
+    position: sticky;
+    top: 32px;
+    overflow: hidden;
+    border-radius: 2px;
+}
+
+.about-image img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    display: block;
+    filter: saturate(0.85);
+    transition: filter 0.5s ease;
+}
+
+.about-image:hover img {
+    filter: saturate(1.05);
+}
+
+.about-text {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding-top: 8px;
+}
+
+.about-label {
+    font-size: 0.58em;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--accent);
+}
+
+.about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 3em;
+    letter-spacing: 0.1em;
+    color: var(--ink);
+    line-height: 1;
+}
+
+.about-bio {
+    font-size: 0.78em;
+    font-weight: 300;
+    line-height: 1.9;
+    color: var(--mid);
+}
+
+.about-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    margin: 8px 0;
+}
+
+.about-quote {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 300;
+    font-size: 1.15em;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+    line-height: 1.6;
+}
+
+/* ── FOOTER ── */
+footer {
+    margin-top: 40px;
+}
+
+.footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 40px 40px 48px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.footer-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.4em;
+    letter-spacing: 0.35em;
+    color: var(--ink);
+}
+
+.footer-links {
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.footer-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    color: var(--mid);
+    font-size: 0.65em;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    transition: color 0.3s ease;
+}
+
+.footer-link svg {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.footer-link:hover {
+    color: var(--accent);
+}
+
+.footer-link:hover svg {
+    opacity: 1;
+}
+
+.footer-copy {
+    font-size: 0.55em;
+    letter-spacing: 0.15em;
+    color: #444;
+}
+
+/* ── RESPONSIVO ── */
+@media (max-width: 860px) {
+    .about {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding: 48px 24px 64px;
+    }
+
+    .about-image {
+        position: static;
+        max-width: 340px;
+        margin: 0 auto;
+    }
+
+    .footer-links {
+        gap: 24px;
+    }
+}
+
+@media (max-width: 500px) {
+    .footer-links {
+        flex-direction: column;
+        gap: 16px;
+    }
+}
