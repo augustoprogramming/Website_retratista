@@ -116,6 +116,16 @@ hr.divider {
     filter: saturate(1.1);
 }
 
+/* Texto sobreposto — só aparece no mobile via media query */
+.hero-overlay-text {
+    display: none;
+}
+
+/* Botão mobile abaixo do hero — oculto no desktop */
+.mobile-cta {
+    display: none;
+}
+
 /* ── STATEMENT ── */
 .statement {
     text-align: center;
@@ -303,10 +313,88 @@ hr.divider {
 }
 
 @media (max-width: 600px) {
-    .hero-trio { grid-template-columns: 1fr; }
     .cards-grid { grid-template-columns: 1fr; }
-    .ba-pair { grid-template-columns: 1fr; }
     .statement-title { font-size: 1.5em; }
+
+    /* ── HERO MOBILE: só a primeira imagem, frase sobreposta ── */
+    .hero-trio {
+        display: flex;
+        justify-content: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* esconde imagens 2 e 3 */
+    .hero-img:nth-child(2),
+    .hero-img:nth-child(3) {
+        display: none;
+    }
+
+    /* primeira imagem centralizada */
+    .hero-img--main {
+        position: relative;
+        width: 75%;
+        margin: 0 auto;
+        aspect-ratio: 3 / 4;
+        max-height: 75vh;
+        overflow: hidden;
+    }
+
+    /* botão mobile centralizado */
+    .mobile-cta {
+        display: flex;
+        justify-content: center;
+        padding: 28px 16px 8px;
+    }
+
+    /* gradiente escuro na base para legibilidade */
+    .hero-img--main::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 50%);
+        pointer-events: none;
+    }
+
+    /* frase sobreposta — escondida no desktop, visível no mobile */
+    .hero-overlay-text {
+        display: block;
+        position: absolute;
+        bottom: 32px;
+        right: 20px;
+        z-index: 2;
+        text-align: right;
+        font-family: 'Cormorant Garamond', serif;
+        font-weight: 300;
+        font-size: clamp(1.15em, 5.5vw, 1.6em);
+        line-height: 1.35;
+        letter-spacing: 0.06em;
+        color: #f0f0f0;
+        text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+        pointer-events: none;
+    }
+
+    /* statement some — frase já está na imagem */
+    .statement {
+        display: none;
+    }
+
+    /* ── ANTES E DEPOIS MOBILE: lado a lado ── */
+    .ba-pair {
+        grid-template-columns: 1fr 1fr;
+        gap: 4px;
+    }
+
+    .ba-item {
+        aspect-ratio: 2 / 3;
+    }
+
+    .ba-label {
+        font-size: 0.45em;
+        padding: 3px 7px;
+        top: 8px;
+        left: 8px;
+    }
 }
 /* ── ENTRADA SUAVE SEM ESPERAR IMAGENS ── */
 

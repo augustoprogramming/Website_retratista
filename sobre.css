@@ -235,8 +235,13 @@ footer {
 
     .about-image {
         position: static;
-        max-width: 340px;
+        max-width: 280px;
         margin: 0 auto;
+    }
+
+    .about-image img {
+        max-height: 55vh;
+        object-fit: cover;
     }
 
     .footer-links {
